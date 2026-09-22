@@ -1,0 +1,5 @@
+---
+triple:          'arm64-apple-darwin'
+binary-path:     '/Users/iskorka/Documents/universaty/OOP/lab 2/lab 2/main'
+relocations:     []
+...
