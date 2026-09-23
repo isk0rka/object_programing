@@ -1,4 +1,4 @@
-#include "pyramids_manager.h"
+#include <pyramids_manager.h>
 
 void pyramids_manager::add_pyramid(double side, double height) {
     pyramids.emplace_back(side, height);
@@ -42,6 +42,6 @@ const pyramid* pyramids_manager::get_pyramid(size_t index) const {
     return &pyramids[index];
 }
 
-int pyramids_manager::get_count() const {
+std::size_t pyramids_manager::get_count() const {
     return pyramids.size();
 }

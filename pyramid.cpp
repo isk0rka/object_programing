@@ -1,5 +1,6 @@
 #include <stdexcept>
-#include "pyramid.h"
+#include <cmath>
+#include <pyramid.h>
 
 pyramid::pyramid(double input_square_side, double input_height) {
     set_side(input_square_side);
@@ -7,16 +8,16 @@ pyramid::pyramid(double input_square_side, double input_height) {
 }
 
 void pyramid::set_side(double input_side) {
-    if (input_side <= 0) {
-        throw std::invalid_argument("Side must be positive");
+    if (!std::isfinite(input_side) || input_side <= 0) {
+        throw std::invalid_argument("Side must be a positive finite number");
     }
 
     square_side = input_side;
 }
 
 void pyramid::set_height(double input_height) {
-    if (input_height <= 0) {
-        throw std::invalid_argument("Height must be positive");
+    if (!std::isfinite(input_height) || input_height <= 0) {
+        throw std::invalid_argument("Height must be a positive finite number");
     }
 
     height = input_height;

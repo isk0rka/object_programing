@@ -1,6 +1,6 @@
 #pragma once
 
-#include "pyramids_manager.h"
+#include <pyramids_manager.h>
 
 class console_interface {
 private:

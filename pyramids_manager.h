@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "pyramid.h"
+#include <pyramid.h>
 
 class pyramids_manager {
 private:
@@ -15,5 +15,5 @@ public:
 
     const pyramid* get_pyramid(size_t index) const;
     
-    int get_count() const;
+    std::size_t get_count() const;
 };

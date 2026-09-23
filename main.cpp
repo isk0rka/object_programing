@@ -3,7 +3,7 @@
 Запрограммировать класс, позволяющий создать несколько таких объектов, найти большие по площади основания и объёму, из этих объектов.
 */
 
-#include "console_interface.h"
+#include <console_interface.h>
 
 int main() {
     console_interface program;

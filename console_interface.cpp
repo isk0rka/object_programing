@@ -1,4 +1,4 @@
-#include "console_interface.h"
+#include <console_interface.h>
 
 #include <iostream>
 #include <iomanip>
@@ -62,9 +62,7 @@ void console_interface::input_pyramids() {
 
     int count = input_positive_int();
 
-    int i = 0;
-
-    while (i < count) {
+    for (int i = 0; i < count; ++i) {
         double side;
         double height;
 
@@ -83,8 +81,6 @@ void console_interface::input_pyramids() {
         }
 
         manager.add_pyramid(side, height);
-
-        i++;
     }
 }
 
@@ -103,6 +99,8 @@ void console_interface::print_pyramid(const pyramid& object) {
 void console_interface::print_all_pyramids() {
     cout << "\nВсе пирамиды:\n\n";
 
+    cout << fixed << setprecision(2);
+
     cout << left
          << setw(8)  << "#"
          << setw(12) << "Side"
@@ -113,7 +111,7 @@ void console_interface::print_all_pyramids() {
 
     cout << string(56, '-') << '\n';
 
-    for (int i = 0; i < manager.get_count(); i++) {
+    for (std::size_t i = 0; i < manager.get_count(); ++i) {
         const pyramid* object = manager.get_pyramid(i);
 
         if (object != nullptr) {
