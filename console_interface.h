@@ -8,8 +8,9 @@ private:
     int input_positive_int();
 
     void input_pyramids();
+    
     void print_pyramid(const pyramid& object);
-
+    void print_all_pyramids();
 public:
     void run();
 };

@@ -1,6 +1,7 @@
 #include "console_interface.h"
 
 #include <iostream>
+#include <iomanip>
 #include <sstream>
 #include <string>
 
@@ -90,22 +91,49 @@ void console_interface::input_pyramids() {
 
 
 void console_interface::print_pyramid(const pyramid& object) {
-    cout << "Сторона основания: "
-         << object.get_side() << '\n';
+    cout << "Сторона основания: " << object.get_side() << '\n';
 
-    cout << "Высота: "
-         << object.get_height() << '\n';
+    cout << "Высота: " << object.get_height() << '\n';
 
-    cout << "Площадь основания: "
-         << object.get_base_area() << '\n';
+    cout << "Площадь основания: " << object.get_base_area() << '\n';
 
-    cout << "Объем: "
-         << object.get_volume() << '\n';
+    cout << "Объем: " << object.get_volume() << '\n';
+}
+
+
+void console_interface::print_all_pyramids() {
+    cout << "\nВсе пирамиды:\n\n";
+
+    cout << left
+         << setw(8)  << "#"
+         << setw(12) << "Side"
+         << setw(12) << "Height"
+         << setw(12) << "Area"
+         << setw(12) << "Volume"
+         << '\n';
+
+    cout << string(56, '-') << '\n';
+
+    for (int i = 0; i < manager.get_count(); i++) {
+        const pyramid* object = manager.get_pyramid(i);
+
+        if (object != nullptr) {
+            cout << left
+                 << setw(8)  << i + 1
+                 << setw(12) << object->get_side()
+                 << setw(12) << object->get_height()
+                 << setw(12) << object->get_base_area()
+                 << setw(12) << object->get_volume()
+                 << '\n';
+        }
+    }
 }
 
 
 void console_interface::run() {
     input_pyramids();
+
+    print_all_pyramids();
 
     const pyramid* max_base_area =
         manager.get_max_base_area();
@@ -115,7 +143,6 @@ void console_interface::run() {
     if (max_base_area != nullptr) {
         print_pyramid(*max_base_area);
     }
-
 
     const pyramid* max_volume =
         manager.get_max_volume();

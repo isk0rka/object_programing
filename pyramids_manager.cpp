@@ -35,6 +35,13 @@ const pyramid* pyramids_manager::get_max_volume() const {
     return &pyramids[max_index];
 }
 
+const pyramid* pyramids_manager::get_pyramid(size_t index) const {
+    if (index >= pyramids.size()) {
+        return nullptr;
+    }
+    return &pyramids[index];
+}
+
 int pyramids_manager::get_count() const {
     return pyramids.size();
 }
