@@ -3,6 +3,7 @@
 #include <iostream>
 #include <iomanip>
 #include <sstream>
+#include <cmath>
 #include <string>
 
 using namespace std;
@@ -21,7 +22,7 @@ bool console_interface::try_input_positive_double(double& value) {
 
     stream >> ws;
 
-    if (!stream.eof() || value <= 0) {
+    if (!stream.eof() || !std::isfinite(value) || value <= 0) {
         return false;
     }
 
@@ -71,16 +72,14 @@ void console_interface::input_pyramids() {
 
         cout << "Введите сторону основания: ";
 
-        if (!try_input_positive_double(side)) {
-            cout << "Ошибка ввода. Повторите ввод пирамиды.\n";
-            continue;
+        while (!try_input_positive_double(side)) {
+            cout << "Ошибка. Введите положительное число: ";
         }
 
         cout << "Введите высоту: ";
 
-        if (!try_input_positive_double(height)) {
-            cout << "Ошибка ввода. Повторите ввод пирамиды.\n";
-            continue;
+        while (!try_input_positive_double(height)) {
+            cout << "Ошибка. Введите положительное число: ";
         }
 
         manager.add_pyramid(side, height);

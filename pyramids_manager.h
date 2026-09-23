@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include "pyramid.h"
 
@@ -10,7 +12,7 @@ public:
 
     const pyramid* get_max_base_area() const;
     const pyramid* get_max_volume() const;
-    
+
     const pyramid* get_pyramid(size_t index) const;
     
     int get_count() const;

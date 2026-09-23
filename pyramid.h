@@ -1,3 +1,5 @@
+#pragma once
+
 class pyramid {
 private:
     double square_side;
