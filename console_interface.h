@@ -7,7 +7,7 @@ private:
     bool try_input_positive_double(double& value);
     int input_positive_int();
 
-    void input_pyramids(pyramids_manager& manager);
+    void input_pyramids();
     void print_pyramid(const pyramid& object);
 
 public:

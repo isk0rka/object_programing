@@ -3,12 +3,13 @@
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <limits>
 
 using namespace std;
 
+
 bool console_interface::try_input_positive_double(double& value) {
     string input;
+
     getline(cin, input);
 
     stringstream stream(input);
@@ -17,18 +18,15 @@ bool console_interface::try_input_positive_double(double& value) {
         return false;
     }
 
-    if (value <= 0) {
-        return false;
-    }
-
     stream >> ws;
 
-    if (!stream.eof()) {
+    if (!stream.eof() || value <= 0) {
         return false;
     }
 
     return true;
 }
+
 
 int console_interface::input_positive_int() {
     string input;
@@ -56,8 +54,10 @@ int console_interface::input_positive_int() {
     return value;
 }
 
-void console_interface::input_pyramids(pyramids_manager& manager) {
+
+void console_interface::input_pyramids() {
     cout << "Введите количество пирамид: ";
+
     int count = input_positive_int();
 
     int i = 0;
@@ -88,24 +88,41 @@ void console_interface::input_pyramids(pyramids_manager& manager) {
     }
 }
 
+
 void console_interface::print_pyramid(const pyramid& object) {
-    cout << "Сторона основания: " << object.get_side() << '\n';
+    cout << "Сторона основания: "
+         << object.get_side() << '\n';
 
-    cout << "Высота: " << object.get_height() << '\n';
+    cout << "Высота: "
+         << object.get_height() << '\n';
 
-    cout << "Площадь основания: " << object.get_base_area() << '\n';
+    cout << "Площадь основания: "
+         << object.get_base_area() << '\n';
 
-    cout << "Объем: " << object.get_volume() << '\n';
+    cout << "Объем: "
+         << object.get_volume() << '\n';
 }
 
-void console_interface::run() {
-    pyramids_manager manager;
 
-    input_pyramids(manager);
+void console_interface::run() {
+    input_pyramids();
+
+    const pyramid* max_base_area =
+        manager.get_max_base_area();
 
     cout << "\nПирамида с наибольшей площадью основания:\n";
-    print_pyramid(manager.get_max_base_area());
+
+    if (max_base_area != nullptr) {
+        print_pyramid(*max_base_area);
+    }
+
+
+    const pyramid* max_volume =
+        manager.get_max_volume();
 
     cout << "\nПирамида с наибольшим объемом:\n";
-    print_pyramid(manager.get_max_volume());
+
+    if (max_volume != nullptr) {
+        print_pyramid(*max_volume);
+    }
 }
