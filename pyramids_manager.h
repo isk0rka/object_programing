@@ -1,7 +1,8 @@
 #pragma once
 
 #include <vector>
-#include <pyramid.h>
+
+#include "pyramid.h"
 
 class pyramids_manager {
 private:

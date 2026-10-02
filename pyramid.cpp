@@ -1,6 +1,12 @@
 #include <stdexcept>
 #include <cmath>
-#include <pyramid.h>
+
+#include "pyramid.h"
+
+pyramid::pyramid(){
+    set_side(1);
+    set_height(1);
+}
 
 pyramid::pyramid(double input_square_side, double input_height) {
     set_side(input_square_side);

@@ -6,6 +6,8 @@ private:
     double height;
 
 public:
+
+    pyramid();
     pyramid(double input_square_side, double input_height);
 
     void set_side(double input_side);
