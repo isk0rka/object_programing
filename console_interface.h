@@ -6,12 +6,15 @@ class console_interface {
 private:
     pyramids_manager manager;
 
-    bool valid_input_pyramids(double side,double height);
+    int input_positive_int();
+
+    bool valid_input_pyramids(double side, double height);
 
     void input_pyramids();
 
     void print_pyramid(const pyramid& object);
     void print_all_pyramids();
+
 public:
     void run();
 };

@@ -15,7 +15,7 @@ pyramid::pyramid(double input_square_side, double input_height) {
 
 void pyramid::set_side(double input_side) {
     if (!std::isfinite(input_side) || input_side <= 0) {
-        throw std::invalid_argument("Side must be a positive finite number");
+        throw std::invalid_argument("Сторона должна быть положительным конечным числом.");
     }
 
     square_side = input_side;
@@ -23,7 +23,7 @@ void pyramid::set_side(double input_side) {
 
 void pyramid::set_height(double input_height) {
     if (!std::isfinite(input_height) || input_height <= 0) {
-        throw std::invalid_argument("Height must be a positive finite number");
+        throw std::invalid_argument("Высота должна быть положительным конечным числом.");
     }
 
     height = input_height;
