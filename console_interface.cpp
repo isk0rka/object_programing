@@ -8,28 +8,6 @@
 
 using namespace std;
 
-
-bool console_interface::try_input_positive_double(double& value) {
-    string input;
-
-    getline(cin, input);
-
-    stringstream stream(input);
-
-    if (!(stream >> value)) {
-        return false;
-    }
-
-    stream >> ws;
-
-    if (!stream.eof() || !std::isfinite(value) || value <= 0) {
-        return false;
-    }
-
-    return true;
-}
-
-
 int console_interface::input_positive_int() {
     string input;
     int value = 0;
@@ -42,45 +20,47 @@ int console_interface::input_positive_int() {
 
         if (stream >> value) {
             stream >> ws;
-
+            
             if (stream.eof() && value > 0) {
                 correct_input = true;
             }
         }
 
-        if (!correct_input) {
+        if (!correct_input) { 
             cout << "Ошибка. Введите положительное целое число: ";
         }
     }
-
     return value;
 }
 
+bool console_interface::valid_input_pyramids(double side,double height) {
+    try
+        {
+            manager.add_pyramid(side, height);
+            return true;
+        }
+        catch(const std::exception& e)
+        {
+            std::cerr << e.what() << '\n';
+            return false;
+        }
+}
 
 void console_interface::input_pyramids() {
+    double side = -1.0;
+    double height = -1.0;
+
     cout << "Введите количество пирамид: ";
 
     int count = input_positive_int();
 
     for (int i = 0; i < count; ++i) {
-        double side;
-        double height;
-
-        cout << "\nПирамида #" << i + 1 << '\n';
-
-        cout << "Введите сторону основания: ";
-
-        while (!try_input_positive_double(side)) {
-            cout << "Ошибка. Введите положительное число: ";
-        }
-
-        cout << "Введите высоту: ";
-
-        while (!try_input_positive_double(height)) {
-            cout << "Ошибка. Введите положительное число: ";
-        }
-
-        manager.add_pyramid(side, height);
+        do {
+            cout << "Введите сторону основания: ";
+            cin >> side;
+            cout << "Введите высоту: ";
+            cin >> height;
+        } while (!valid_input_pyramids(side, height));
     }
 }
 

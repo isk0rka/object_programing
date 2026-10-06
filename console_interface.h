@@ -6,8 +6,7 @@ class console_interface {
 private:
     pyramids_manager manager;
 
-    bool try_input_positive_double(double& value);
-    int input_positive_int();
+    bool valid_input_pyramids(double side,double height);
 
     void input_pyramids();
 

@@ -9,8 +9,9 @@ const pyramid* pyramids_manager::get_max_base_area() const {
         return nullptr;
     }
 
-    size_t max_index = 0;
-    for (size_t i = 1; i < pyramids.size(); i++) {
+    std::size_t max_index = 0;
+
+    for (std::size_t i = 1; i < pyramids.size(); ++i) {
         if (pyramids[i].get_base_area() > pyramids[max_index].get_base_area()) {
             max_index = i;
         }
