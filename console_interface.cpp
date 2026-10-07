@@ -20,7 +20,7 @@ int console_interface::input_positive_int() {
 
         if (stream >> value) {
             stream >> ws;
-            
+
             if (stream.eof() && value > 0) {
                 correct_input = true;
             }
@@ -112,21 +112,44 @@ void console_interface::run() {
 
     print_all_pyramids();
 
-    const pyramid* max_base_area =
-        manager.get_max_base_area();
+    try {
+        std::vector<const pyramid*> max_base_area =
+            manager.get_max_base_area();
 
-    cout << "\nПирамида с наибольшей площадью основания:\n";
+        if (max_base_area.size() == 1) {
+            cout << "\nПирамида с наибольшей площадью основания:\n";
+        }
+        else {
+            cout << "\nПирамиды с наибольшей площадью основания:\n";
+        }
 
-    if (max_base_area != nullptr) {
-        print_pyramid(*max_base_area);
+        for (const pyramid* object : max_base_area) {
+            print_pyramid(*object);
+            cout << '\n';
+        }
+    }
+    catch (const std::exception& e) {
+        cout << '\n' << e.what() << '\n';
     }
 
-    const pyramid* max_volume =
-        manager.get_max_volume();
 
-    cout << "\nПирамида с наибольшим объемом:\n";
+    try {
+        std::vector<const pyramid*> max_volume =
+            manager.get_max_volume();
 
-    if (max_volume != nullptr) {
-        print_pyramid(*max_volume);
+        if (max_volume.size() == 1) {
+            cout << "\nПирамида с наибольшим объемом:\n";
+        }
+        else {
+            cout << "\nПирамиды с наибольшим объемом:\n";
+        }
+
+        for (const pyramid* object : max_volume) {
+            print_pyramid(*object);
+            cout << '\n';
+        }
+    }
+    catch (const std::exception& e) {
+        cout << '\n' << e.what() << '\n';
     }
 }
