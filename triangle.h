@@ -14,21 +14,27 @@ private:
     double side_b;
     double side_c;
 
-    void set_side_a(double input_side);
-    void set_side_b(double input_side);
-    void set_side_c(double input_side);
+    bool valided_side(double side);
 
-    bool check_life(double max, double input_side, double input_next_side);
-    bool valid_data(double input_side_a, double input_side_b, double input_side_c);
+    bool is_valid_figure(double side_a, double side_b, double side_c);
+    bool is_valid_sides(double side_a, double side_b, double side_c);
+    bool valid_input_str(std::string input_data);
 
 public:
 
     triangle();
     triangle(double input_side_a, double input_side_b, double input_side_c);
+    triangle(std::string input_data);
+
+    void set_side_a(double side);
+    void set_side_b(double side);
+    void set_side_c(double side);
 
     double get_side_a() const;
     double get_side_b() const;
-    double get_aria() const;
+    double get_side_c() const;
+    double get_area() const;
+    std::string get_str() const;
 
     ~triangle();
 };

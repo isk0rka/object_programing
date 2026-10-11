@@ -1,53 +1,52 @@
 #include "triangle.h"
 
+#include <sstream>
+#include <string>
 #include <stdexcept>
-#include <algorithm>
 #include <cmath>
+#include <algorithm>
 
-void triangle::set_side_a(double input_side){
-    if (!std::isfinite(input_side) || input_side <= 0) {
-        throw std::invalid_argument("сторона A должна быть положительным конечным числом.");
+bool triangle::valided_side(double side){
+    if (!std::isfinite(side) || side <= 0) {
+        throw std::invalid_argument("сторона должна быть положительным конечным числом.");
     }
-    side_a = input_side;
-}
-
-void triangle::set_side_b(double input_side){
-    if (!std::isfinite(input_side) || input_side <= 0) {
-        throw std::invalid_argument("сторона B быть положительным конечным числом.");
-    }
-    side_b = input_side;
-}
-
-void triangle::set_side_c(double input_side){
-    if (!std::isfinite(input_side) || input_side <= 0) {
-        throw std::invalid_argument("сторона C быть положительным конечным числом.");
-    }
-    side_b = input_side;
+    return true;
 }
 
 
-bool triangle::check_life(double max, double input_side, double input_next_side){
-    if (max < (input_side + input_next_side)){
+bool triangle::is_valid_sides(double side_a, double side_b, double side_c){
+    if (valided_side(side_a) && valided_side(side_b) && valided_side(side_c)){
         return true;
-    } else {
+    }
+    return false;
+}
+
+
+bool triangle::is_valid_figure(double side_a, double side_b, double side_c){
+    if (!((2 * std::max({side_a,side_b,side_c})) < (side_a + side_b + side_c))) {
+        throw std::invalid_argument( "Треугольник с такими сторонами не существует.");
+    }
+    return true; 
+}
+
+bool triangle::valid_input_str(std::string input_data_str){
+    if (input_data_str.empty()){
         return false;
     }
-}
 
+    std::istringstream stream(input_data_str);
 
-bool triangle::valid_data(double input_side_a, double input_side_b, double input_side_c){
+    double input_side_a;
+    double input_side_b;
+    double input_side_c;
 
-    double max = std::max(input_side_a, input_side_b, input_side_c);
-    
-    if (max == input_side_a) {
-        return check_life(max, input_side_b, input_side_c);
-    } else if (max == input_side_b) {
-        return check_life(max, input_side_a, input_side_c);
-    } else if (max == input_side_c) {
-        return check_life(max, input_side_a, input_side_b);
-    } else {
+    if (!(stream >> input_side_a >> input_side_b >> input_side_c)){
+        return false;
     }
-    
+
+    stream >> std::ws;
+
+    return stream.eof();
 }
 
 
@@ -58,9 +57,53 @@ triangle::triangle(){
 }
 
 triangle::triangle(double input_side_a, double input_side_b, double input_side_c){
-    set_side_a(input_side_a);
-    set_side_b(input_side_b);
-    set_side_c(input_side_c);
+    if ((is_valid_sides(input_side_a, input_side_b, input_side_c)) 
+        && (is_valid_figure(input_side_a, input_side_b, input_side_c))){
+
+        side_a = input_side_a;
+        side_b = input_side_b;
+        side_c = input_side_c;
+    }           
+}
+
+
+triangle::triangle(std::string input_data_str): triangle([&]() {
+        if (!valid_input_str(input_data_str)){
+            throw std::invalid_argument("Некорректный формат строки.");
+        }
+
+        std::istringstream stream(input_data_str);
+
+        double input_side_a;
+        double input_side_b;
+        double input_side_c;
+
+        stream >> input_side_a >> input_side_b >> input_side_c;
+
+        return triangle( input_side_a, input_side_b, input_side_c);
+    }())
+{
+}
+
+void triangle::set_side_a(double side){
+    if ((valided_side(side)) 
+        && (is_valid_figure(side, side_b, side_c))){
+        side_a = side;
+    }
+}
+
+void triangle::set_side_b(double side){
+    if ((valided_side(side)) 
+        && (is_valid_figure(side, side_b, side_c))){
+        side_b = side;
+    }
+}
+
+void triangle::set_side_c(double side){
+    if ((valided_side(side)) 
+        && (is_valid_figure(side, side_b, side_c))){
+        side_c = side;
+    }
 }
 
 
@@ -72,10 +115,22 @@ double triangle::get_side_b() const{
     return side_b;
 }
 
-double triangle::get_aria() const{
-    if ((side_a >= 0.0) && (side_b >= 0.0)){
-        return((side_a * side_b) / 2);
-    } else {
-        return ((side_a * side_a) / 2);
-    }
+
+double triangle::get_side_c() const{
+    return side_c;
+}
+
+
+double triangle::get_area() const{
+    double p = (side_a + side_b + side_c) / 2.0;
+    return std::sqrt( p * (p - side_a) * (p - side_b) * (p - side_c));
+}
+
+
+std::string triangle::get_str() const{
+    return std::to_string(side_a) + " " + std::to_string(side_b) + " " + std::to_string(side_c);
+}
+
+
+triangle::~triangle(){
 }
