@@ -13,6 +13,8 @@ class vect
 {
 private:
     
+    
+
 public:
     vect();
     ~vect();
