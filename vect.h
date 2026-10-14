@@ -1,40 +1,31 @@
-/*1. Запрограммировать класс Вектор.
-
-Предусмотреть "защиту от дурака" на введение размера вектора, ограниченного, например, значением 100.
-
-Запрограммировать операции доступ по индексу, добавление элемента, удаление элемента из начала,
-удаление элемента из конца.
-Предусмотреть генерацию исключительных ситуаций:
-1) попытка обратиться к элементу с номером меньше 0 или больше текущего размера вектора;
-2) попытка добавить элемент с номером больше максимального размера;
-3) попытка удалить элемент из пустого вектора. */
-
-
-#pragma once
+#ifndef VECT_H
+#define VECT_H
 
 #include <memory>
-#include <type_traits>
 #include <utility>
 
 template <typename T>
-class vect
-{
+class vect {
 private:
     using allocator_type = std::allocator<T>;
     using allocator_traits = std::allocator_traits<allocator_type>;
 
     allocator_type allocator_;
-    T* data_;
-    int size_;
+    T* data_ = nullptr;
+    int size_ = 0;
+    int capacity_ = 0;
 
+    static void validate_size(int requested_size);
     void check_index(int index) const;
     void check_capacity() const;
-    void ensure_storage();
+    int next_capacity() const noexcept;
+    void destroy_elements() noexcept;
+    void release_storage() noexcept;
 
 public:
     static constexpr int MAX_SIZE = 100;
 
-    vect();
+    vect() noexcept = default;
     explicit vect(int initial_size);
     vect(int initial_size, const T& value);
 
@@ -47,6 +38,7 @@ public:
     ~vect();
 
     int get_size() const noexcept;
+    int get_capacity() const noexcept;
     bool is_empty() const noexcept;
 
     T& operator[](int index);
@@ -65,3 +57,5 @@ public:
 
     void swap(vect& other) noexcept;
 };
+#include "vect.cpp"
+#endif
