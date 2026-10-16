@@ -16,10 +16,19 @@ bool student::is_valid_fullname(std::string name, std::string surname, std::stri
 }
 
 student::student(){
-
+    surname = "Иванов";
+    name = "Иван";
+    Patronymic = "Иванович";
 }
-student::student(std::string name, std::string surname, std::string Patronymic){
 
+student::student(std::string name, std::string surname, std::string Patronymic){
+    if (!is_valid_fullname){
+        throw ;
+    } else {
+        this->name = name;
+        this->surname = surname;
+        this->Patronymic = Patronymic;
+    }
 }
 
 void student::set_delete(){
@@ -28,8 +37,14 @@ void student::set_delete(){
     } else { throw ;}
 }
 
-void student::get_full_name() const{
+std::string student::get_full_name() const{
+    return name + " " +
+        surname + " " +
+        Patronymic;
+}
 
+int student::get_id() const{
+    return id;
 }
 
 student::~student(){

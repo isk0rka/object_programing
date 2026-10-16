@@ -7,8 +7,10 @@ class student
 {
 private:
 
-    std::string name;
+    int id;
+
     std::string surname;
+    std::string name;
     std::string Patronymic;
     
     bool deleted;
@@ -24,7 +26,8 @@ public:
 
     void set_delete();
     
-    void get_full_name() const;
+    std::string get_full_name() const;
+    int get_id() const;
 
     ~student();
 };
