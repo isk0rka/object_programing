@@ -1,16 +1,18 @@
+#include <string>
+
 #include "student.h"
+#include "CONSTANTS.h"
 
-bool student::is_valid_name(std::string name){
-
+bool student::is_valid_fullname_part(std::string name_part){
+    for (size_t i = 0; i < name_part.size(); i++){
+        if (!(INCORECT_CHAR_FULLNAME.find()==)){
+            return 
+        }
+    }
 }
-bool student::is_valid_surname(std::string surname){
 
-}
-bool student::is_valid_Patronymic(std::string Patronymic){
+bool student::is_valid_fullname(std::string name, std::string surname, std::string Patronymic){
 
-}
-
-bool student::is_valid_fullname(){
 
 }
 

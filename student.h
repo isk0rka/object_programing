@@ -13,11 +13,9 @@ private:
     
     bool deleted;
 
-    bool is_valid_name(std::string name);
-    bool is_valid_surname(std::string surname);
-    bool is_valid_Patronymic(std::string Patronymic);
+    bool is_valid_fullname_part(std::string name_part);
 
-    bool is_valid_fullname();
+    bool is_valid_fullname(std::string name, std::string surname, std::string Patronymic);
 
 public:
 
