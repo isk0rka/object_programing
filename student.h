@@ -7,8 +7,6 @@ class student
 {
 private:
 
-    int id;
-
     std::string surname;
     std::string name;
     std::string Patronymic;
