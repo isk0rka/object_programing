@@ -8,6 +8,8 @@ class student
 private:
     int id;
     std::string name;
+    std::string surname;
+    std::string Patronymic;
     bool deleted;
 public:
     student();
