@@ -123,7 +123,6 @@ int main() {
                             0, vect<triangle>::MAX_SIZE
                         );
 
-                        // Исходный вектор меняется только после полного ввода.
                         vect<triangle> new_triangles(size);
 
                         for (int i = 0; i < size; ++i) {
@@ -218,7 +217,6 @@ int main() {
                 throw;
             }
             catch (const std::exception& error) {
-                // Остальные ошибки операций не завершают работу программы.
                 std::cout << "Ошибка: " << error.what() << '\n';
             }
         }
