@@ -1,4 +1,3 @@
-
 #include "triangle.h"
 #include "vect.h"
 
@@ -12,11 +11,9 @@ std::string user_input(const std::string& message) {
     std::cout << message;
 
     std::string input;
-
     if (!std::getline(std::cin, input)) {
         throw std::ios_base::failure("Ввод завершён");
     }
-
     return input;
 }
 
@@ -27,7 +24,6 @@ int user_input_int(const std::string& message) {
 
         if (stream >> value) {
             stream >> std::ws;
-
             if (stream.eof()) {
                 return value;
             }
@@ -37,13 +33,26 @@ int user_input_int(const std::string& message) {
     }
 }
 
+int user_input_int_range(const std::string& message,
+                         int min_value, int max_value) {
+    while (true) {
+        int value = user_input_int(message);
+
+        if (value >= min_value && value <= max_value) {
+            return value;
+        }
+
+        std::cout << "Ошибка: введите число от " << min_value
+                  << " до " << max_value << ".\n";
+    }
+}
+
 triangle user_input_triangle() {
     while (true) {
         try {
             std::string input = user_input(
                 "Введите стороны A B C через пробел: "
             );
-
             return triangle(input);
         }
         catch (const std::ios_base::failure&) {
@@ -87,7 +96,7 @@ int main() {
     try {
         while (true) {
             std::cout
-                << "\n Вектор треугольников :\n"
+                << "\nВектор треугольников:\n"
                 << "1. Создать вектор треугольников\n"
                 << "2. Вывести все треугольники\n"
                 << "3. Получить треугольник по индексу\n"
@@ -99,7 +108,7 @@ int main() {
                 << "9. Очистить вектор\n"
                 << "0. Выход\n";
 
-            int choice = user_input_int("Выберите действие: ");
+            int choice = user_input_int_range("Выберите действие: ", 0, 9);
 
             if (choice == 0) {
                 std::cout << "Завершение программы.\n";
@@ -109,21 +118,20 @@ int main() {
             try {
                 switch (choice) {
                     case 1: {
-                        int size = user_input_int(
-                            "Количество треугольников (0..100): "
+                        int size = user_input_int_range(
+                            "Количество треугольников (0..100): ",
+                            0, vect<triangle>::MAX_SIZE
                         );
 
+                        // Исходный вектор меняется только после полного ввода.
                         vect<triangle> new_triangles(size);
 
                         for (int i = 0; i < size; ++i) {
-                            std::cout << "\nТреугольник "
-                                      << i + 1 << ":\n";
-
+                            std::cout << "\nТреугольник " << i + 1 << ":\n";
                             new_triangles[i] = user_input_triangle();
                         }
 
                         triangles = std::move(new_triangles);
-
                         print_vector(triangles);
                         break;
                     }
@@ -133,52 +141,59 @@ int main() {
                         break;
 
                     case 3: {
-                        int index = user_input_int(
-                            "Введите индекс: "
-                        );
+                        if (triangles.is_empty()) {
+                            std::cout << "Вектор пуст: нечего выводить.\n";
+                            break;
+                        }
 
+                        int index = user_input_int_range(
+                            "Введите индекс: ", 0, triangles.get_size() - 1
+                        );
                         print_triangle(triangles[index], index);
                         break;
                     }
 
                     case 4: {
+                        if (triangles.get_size() == vect<triangle>::MAX_SIZE) {
+                            std::cout << "Вектор заполнен: добавить элемент нельзя.\n";
+                            break;
+                        }
+
                         triangle figure = user_input_triangle();
-
                         triangles.push_back(figure);
-
                         print_vector(triangles);
                         break;
                     }
 
                     case 5: {
-                        int index = user_input_int(
-                            "Введите позицию вставки: "
-                        );
-
-                        if (index < 0 ||
-                            index > triangles.get_size()) {
-                            throw std::out_of_range(
-                                "Недопустимый индекс вставки"
-                            );
+                        if (triangles.get_size() == vect<triangle>::MAX_SIZE) {
+                            std::cout << "Вектор заполнен: вставка невозможна.\n";
+                            break;
                         }
 
+                        int index = user_input_int_range(
+                            "Введите позицию вставки: ",
+                            0, triangles.get_size()
+                        );
+
                         triangle figure = user_input_triangle();
-
                         triangles.insert(index, figure);
-
                         print_vector(triangles);
                         break;
                     }
 
                     case 6: {
-                        int index = user_input_int(
-                            "Введите индекс замены: "
+                        if (triangles.is_empty()) {
+                            std::cout << "Вектор пуст: нечего заменять.\n";
+                            break;
+                        }
+
+                        int index = user_input_int_range(
+                            "Введите индекс замены: ",
+                            0, triangles.get_size() - 1
                         );
 
-                        triangle& figure = triangles[index];
-
-                        figure = user_input_triangle();
-
+                        triangles[index] = user_input_triangle();
                         print_vector(triangles);
                         break;
                     }
@@ -197,18 +212,14 @@ int main() {
                         triangles.clear();
                         print_vector(triangles);
                         break;
-
-                    default:
-                        std::cout << "Неизвестная команда.\n";
-                        break;
                 }
             }
             catch (const std::ios_base::failure&) {
                 throw;
             }
             catch (const std::exception& error) {
-                std::cout << "Ошибка: "
-                          << error.what() << '\n';
+                // Остальные ошибки операций не завершают работу программы.
+                std::cout << "Ошибка: " << error.what() << '\n';
             }
         }
     }
@@ -216,8 +227,7 @@ int main() {
         std::cout << "\nВвод завершён.\n";
     }
     catch (const std::exception& error) {
-        std::cerr << "Критическая ошибка: "
-                  << error.what() << '\n';
+        std::cerr << "Критическая ошибка: " << error.what() << '\n';
         return 1;
     }
 
