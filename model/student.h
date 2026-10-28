@@ -6,6 +6,7 @@
 class student
 {
 private:
+    char[37] id
 
     std::string surname;
     std::string name;
