@@ -1,4 +1,5 @@
 #include <string>
+#include <uuid>
 
 #include "student.h"
 #include "CONSTANTS.h"

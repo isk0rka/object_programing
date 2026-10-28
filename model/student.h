@@ -2,6 +2,7 @@
 название специальности, средний балл успеваемости. */
 
 #include <string>
+#include <uuid>
 
 class student
 {
