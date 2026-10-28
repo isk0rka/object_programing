@@ -2,12 +2,12 @@
 название специальности, средний балл успеваемости. */
 
 #include <string>
-#include <uuid>
+#include <uuid/uuid.h>
 
 class student
 {
 private:
-    char[37] id
+    char id[37];
 
     std::string surname;
     std::string name;
@@ -21,7 +21,7 @@ private:
 
     bool is_valid_fullname(std::string name, std::string surname, std::string Patronymic);
 
-    char[37] set_id();
+    char set_id();
 
 public:
 
@@ -32,7 +32,7 @@ public:
     
     std::string get_full_name() const;
     int get_average_score() const;
-    int get_id() const;
+    char get_id() const;
 
     ~student();
 };

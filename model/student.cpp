@@ -1,5 +1,5 @@
 #include <string>
-#include <uuid>
+#include <uuid/uuid.h>
 
 #include "student.h"
 #include "CONSTANTS.h"
@@ -16,7 +16,7 @@ bool student::is_valid_fullname(std::string name, std::string surname, std::stri
             && is_valid_fullname_part(Patronymic));
 }
 
-char[37] student::set_id(){
+char student::set_id(){
     
 }
 
@@ -27,8 +27,8 @@ student::student(){
 }
 
 student::student(std::string name, std::string surname, std::string Patronymic){
-    if (!is_valid_fullname){
-        throw ;
+    if (!is_valid_fullname(name, surname, patronymic)) {
+        throw std::invalid_argument("Invalid full name");
     } else {
         this->name = name;
         this->surname = surname;
