@@ -16,8 +16,11 @@ bool student::is_valid_fullname(std::string name, std::string surname, std::stri
             && is_valid_fullname_part(Patronymic));
 }
 
-char student::set_id(){
-    
+bool student::set_id(){
+    uuid_t binuuid;
+    uuid_generate(binuuid);
+
+    uuid_unparse(binuuid, id);
 }
 
 student::student(){
