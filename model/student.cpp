@@ -44,6 +44,10 @@ std::string student::get_full_name() const{
         Patronymic;
 }
 
+int student::get_average_score() const{
+    return average_score;
+}
+
 int student::get_id() const{
     return id;
 }

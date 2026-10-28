@@ -13,6 +13,8 @@ private:
     std::string name;
     std::string Patronymic;
     
+    int average_score;
+
     bool deleted;
 
     bool is_valid_fullname_part(std::string name_part);
@@ -27,6 +29,7 @@ public:
     void set_delete();
     
     std::string get_full_name() const;
+    int get_average_score() const;
     int get_id() const;
 
     ~student();
