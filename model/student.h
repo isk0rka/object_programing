@@ -1,38 +1,44 @@
 /* «Студент», который определяется полями ФИО, номер группы, название факультета, 
 название специальности, средний балл успеваемости. */
+#pragma once
 
 #include <string>
-#include <uuid/uuid.h>
 
-class student
-{
+class student {
 private:
-    char id[37];
+    char id[37]{};
 
     std::string surname;
     std::string name;
     std::string Patronymic;
-    
-    int average_score;
 
-    bool deleted;
+    int average_score = 0;
+    bool deleted = false;
 
-    bool is_valid_fullname_part(std::string name_part);
+    static bool is_valid_fullname_part(
+        const std::string& name_part
+    );
 
-    bool is_valid_fullname(std::string name, std::string surname, std::string Patronymic);
+    static bool is_valid_fullname(
+        const std::string& name,
+        const std::string& surname,
+        const std::string& patronymic
+    );
 
-    bool set_id();
+    void set_id();
 
 public:
-
     student();
-    student(std::string name, std::string surname, std::string Patronymic);
+
+    student(
+        std::string name,
+        std::string surname,
+        std::string patronymic
+    );
 
     void set_delete();
-    
+
     std::string get_full_name() const;
     int get_average_score() const;
-    char get_id() const;
-
-    ~student();
+    std::string get_id() const;
 };

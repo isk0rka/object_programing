@@ -1,61 +1,80 @@
-#include <string>
-#include <uuid/uuid.h>
 
 #include "student.h"
 #include "CONSTANTS.h"
 
-bool student::is_valid_fullname_part(std::string name_part){
-    return ((!name_part.empty())
-             && (name_part.find_first_of(FORBIDDEN_FULLNAME_CHARS)
-             == std::string::npos)) ;
+#include <uuid/uuid.h>
+#include <stdexcept>
+#include <utility>
+
+bool student::is_valid_fullname_part(
+    const std::string& part
+) {
+    return !part.empty() &&
+           part.find_first_of(FORBIDDEN_FULLNAME_CHARS)
+               == std::string::npos;
 }
 
-bool student::is_valid_fullname(std::string name, std::string surname, std::string Patronymic){
-    return (is_valid_fullname_part(name) 
-            && is_valid_fullname_part(surname)
-            && is_valid_fullname_part(Patronymic));
+bool student::is_valid_fullname(
+    const std::string& name,
+    const std::string& surname,
+    const std::string& patronymic
+) {
+    return is_valid_fullname_part(name) &&
+           is_valid_fullname_part(surname) &&
+           is_valid_fullname_part(patronymic);
 }
 
-bool student::set_id(){
-    uuid_t binuuid;
-    uuid_generate(binuuid);
+void student::set_id() {
+    uuid_t binary_id;
 
-    uuid_unparse(binuuid, id);
+    uuid_generate_random(binary_id);
+    uuid_unparse_lower(binary_id, id);
 }
 
-student::student(){
-    surname = "Иванов";
-    name = "Иван";
-    Patronymic = "Иванович";
+student::student()
+    : student("Иван", "Иванов", "Иванович")
+{
 }
 
-student::student(std::string name, std::string surname, std::string Patronymic){
-    if (!is_valid_fullname(name, surname, patronymic)) {
-        throw std::invalid_argument("Invalid full name");
-    } else {
-        this->name = name;
-        this->surname = surname;
-        this->Patronymic = Patronymic;
+student::student(
+    std::string input_name,
+    std::string input_surname,
+    std::string input_patronymic
+)
+    : surname(std::move(input_surname)),
+      name(std::move(input_name)),
+      Patronymic(std::move(input_patronymic))
+{
+    if (!is_valid_fullname(
+        name, surname, Patronymic
+    )) {
+        throw std::invalid_argument(
+            "Invalid full name"
+        );
     }
+
+    set_id();
 }
 
-void student::set_delete(){
-    if (!deleted){
-        deleted = true ;
-    } else { throw ;}
+void student::set_delete() {
+    if (deleted) {
+        throw std::logic_error(
+            "Student already deleted"
+        );
+    }
+
+    deleted = true;
 }
 
-std::string student::get_full_name() const{
-    return name + " " +
-        surname + " " +
-        Patronymic;
+std::string student::get_full_name() const {
+    return surname + " " + name + " " + Patronymic;
 }
 
-int student::get_average_score() const{
+int student::get_average_score() const {
     return average_score;
 }
 
-int student::get_id() const{
+std::string student::get_id() const {
     return id;
 }
 
