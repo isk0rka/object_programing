@@ -21,6 +21,8 @@ private:
 
     bool is_valid_fullname(std::string name, std::string surname, std::string Patronymic);
 
+    char[37] set_id();
+
 public:
 
     student();

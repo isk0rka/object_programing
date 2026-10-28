@@ -16,6 +16,10 @@ bool student::is_valid_fullname(std::string name, std::string surname, std::stri
             && is_valid_fullname_part(Patronymic));
 }
 
+char[37] student::set_id(){
+    
+}
+
 student::student(){
     surname = "Иванов";
     name = "Иван";
