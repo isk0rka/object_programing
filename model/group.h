@@ -13,8 +13,11 @@ private:
     bool deleted;
 public:
     group();
+    
+    void set_list();
 
-
+    void get_list() const;
+    void get_student() const;
 
     ~group();
 };
