@@ -11,6 +11,7 @@ bool student::is_valid_fullname_part(
     const std::string& part
 ) {
     return !part.empty() &&
+           part.find('\0') == std::string::npos &&
            part.find_first_of(FORBIDDEN_FULLNAME_CHARS)
                == std::string::npos;
 }
@@ -51,7 +52,7 @@ student::student(
         name, surname, Patronymic
     )) {
         throw std::invalid_argument(
-            "Invalid full name"
+            "Некорректное ФИО: каждая часть должна быть непустой и не содержать запрещённых символов."
         );
     }
 
@@ -66,11 +67,11 @@ bool student::is_valid_average_score(double average_score) {
 
 void student::set_average_score(double average_score) {
     if (deleted) {
-        throw std::logic_error("Student already deleted");
+        throw std::logic_error("Студент уже удалён.");
     }
 
     if (!is_valid_average_score(average_score)) {
-        throw std::invalid_argument("Invalid average score");
+        throw std::invalid_argument("Средний балл должен быть числом от 0 до 5.");
     }
 
     this->average_score = average_score;
@@ -79,7 +80,7 @@ void student::set_average_score(double average_score) {
 void student::set_delete() {
     if (deleted) {
         throw std::logic_error(
-            "Student already deleted"
+            "Студент уже удалён."
         );
     }
 

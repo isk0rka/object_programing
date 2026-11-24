@@ -10,8 +10,13 @@ private:
     std::vector<faculty> faculties;
 
     faculty* find_faculty(const std::string& name, const std::string& specialty_name);
+    const faculty* find_faculty(const std::string& name, const std::string& specialty_name) const;
+    faculty& require_faculty(const std::string& name, const std::string& specialty_name);
 
 public:
+    void check_faculty(const std::string& name, const std::string& specialty_name) const;
+    void check_group(const std::string& name, const std::string& specialty_name,
+                     const std::string& group_name) const;
     bool add_faculty(const std::string& name, const std::string& specialty_name);
     bool add_group(const std::string& name, const std::string& specialty_name,
                    const std::string& group_name);

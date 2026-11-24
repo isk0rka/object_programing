@@ -21,6 +21,7 @@ public:
     bool add_group(const std::string& group);
     bool remove_group(const std::string& group);
     bool has_group(const std::string& group) const;
+    void check_group(const std::string& group_name) const;
 
     bool add_student(const std::string& group_name, const student& value);
     bool remove_student(const std::string& id);

@@ -13,6 +13,7 @@ private:
     std::ostream& output;
 
     bool read_line(const std::string& prompt, std::string& value);
+    bool read_required(const std::string& prompt, std::string& value);
     bool read_score(const std::string& prompt, double& value);
     void print_students(const std::vector<student>& students) const;
     void print_faculties() const;

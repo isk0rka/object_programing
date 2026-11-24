@@ -22,7 +22,7 @@ case "${1:-}" in
         ./build/lab_3_test
         ;;
     *)
-        echo "Usage: bash build.sh [--test]" >&2
+        echo "Использование: bash build.sh [--test]" >&2
         exit 1
         ;;
 esac
