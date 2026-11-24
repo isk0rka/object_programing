@@ -1,6 +1,3 @@
-
-/* «Студент», который определяется полями ФИО, номер группы, название факультета, 
-название специальности, средний балл успеваемости. */
 #pragma once
 
 #include <string>
@@ -13,7 +10,7 @@ private:
     std::string name;
     std::string Patronymic;
 
-    int average_score = 0;
+    double average_score = 0.0;
     bool deleted = false;
 
     static bool is_valid_fullname_part(
@@ -34,12 +31,16 @@ public:
     student(
         std::string name,
         std::string surname,
-        std::string patronymic
+        std::string patronymic,
+        double average_score = 0.0
     );
 
+    static bool is_valid_average_score(double average_score);
+    void set_average_score(double average_score);
     void set_delete();
+    bool is_deleted() const;
 
     std::string get_full_name() const;
-    int get_average_score() const;
+    double get_average_score() const;
     std::string get_id() const;
 };

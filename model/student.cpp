@@ -3,6 +3,7 @@
 #include "CONSTANTS.h"
 
 #include <uuid/uuid.h>
+#include <cmath>
 #include <stdexcept>
 #include <utility>
 
@@ -39,7 +40,8 @@ student::student()
 student::student(
     std::string input_name,
     std::string input_surname,
-    std::string input_patronymic
+    std::string input_patronymic,
+    double input_average_score
 )
     : surname(std::move(input_surname)),
       name(std::move(input_name)),
@@ -53,7 +55,25 @@ student::student(
         );
     }
 
+    set_average_score(input_average_score);
     set_id();
+}
+
+bool student::is_valid_average_score(double average_score) {
+    return std::isfinite(average_score) &&
+           average_score >= 0.0 && average_score <= 5.0;
+}
+
+void student::set_average_score(double average_score) {
+    if (deleted) {
+        throw std::logic_error("Student already deleted");
+    }
+
+    if (!is_valid_average_score(average_score)) {
+        throw std::invalid_argument("Invalid average score");
+    }
+
+    this->average_score = average_score;
 }
 
 void student::set_delete() {
@@ -66,18 +86,18 @@ void student::set_delete() {
     deleted = true;
 }
 
+bool student::is_deleted() const {
+    return deleted;
+}
+
 std::string student::get_full_name() const {
     return surname + " " + name + " " + Patronymic;
 }
 
-int student::get_average_score() const {
+double student::get_average_score() const {
     return average_score;
 }
 
 std::string student::get_id() const {
     return id;
-}
-
-student::~student(){
-
 }
