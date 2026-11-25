@@ -6,10 +6,10 @@
 #include <string>
 #include <thread>
 
-bool read_positive_int(const std::string& prompt, int& value) {
+bool read_positive_int(const std::string& text, int& value) {
     std::string line;
 
-    while (std::cout << prompt << std::flush &&
+    while (std::cout << text << std::flush &&
            std::getline(std::cin, line)) {
 
         std::istringstream input(line);
