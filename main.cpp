@@ -6,12 +6,43 @@
 #include <string>
 #include <thread>
 
+bool read_positive_int(const std::string& prompt, int& value) {
+    std::string line;
+
+    while (std::cout << prompt << std::flush &&
+           std::getline(std::cin, line)) {
+
+        std::istringstream input(line);
+        std::string extra;
+        int number;
+
+        if ((input >> number) &&
+            number > 0 &&
+            !(input >> extra)) {
+
+            value = number;
+            return true;
+        }
+
+        std::cout
+            << "Ошибка: введите положительное целое число.\n";
+    }
+
+    return false;
+}
+
 void move_car(Car& car, int target) {
     car.set_speed(target);
 
+    std::cout << "Целевая скорость: "
+              << car.get_target_speed()
+              << " км/ч\n";
+
     char previous_gear = car.get_gear();
 
-    std::cout << "Передачи: " << previous_gear;
+    std::cout << "Передачи: "
+              << previous_gear
+              << std::flush;
 
     while (car.update()) {
         const char current_gear = car.get_gear();
@@ -24,97 +55,136 @@ void move_car(Car& car, int target) {
             previous_gear = current_gear;
         }
 
-        std::this_thread::sleep_for(
-            std::chrono::milliseconds(30)
-        );
+        if (car.get_speed() != car.get_target_speed()) {
+            std::this_thread::sleep_for(
+                std::chrono::milliseconds(30)
+            );
+        }
     }
 
-    std::cout << "\nСкорость: "
+    std::cout << "\nСкорость достигнута: "
               << car.get_speed()
               << " км/ч\n";
+}
+
+void show_status(const Car& car) {
+    std::cout << "Двигатель: "
+              << (car.is_engine_working()
+                  ? "включён"
+                  : "выключен")
+              << "\nСкорость: "
+              << car.get_speed()
+              << " км/ч"
+              << "\nЦелевая скорость: "
+              << car.get_target_speed()
+              << " км/ч"
+              << "\nПередача: "
+              << car.get_gear()
+              << '\n';
 }
 
 int main() {
     int max_forward;
     int max_back;
 
-    std::cout << "Максимальные скорости вперёд и назад: ";
+    if (!read_positive_int(
+            "Максимальная скорость вперёд (км/ч): ",
+            max_forward
+        ) ||
+        !read_positive_int(
+            "Максимальная скорость назад (км/ч): ",
+            max_back
+        )) {
 
-    if (!(std::cin >> max_forward >> max_back)) {
-        std::cerr << "Некорректный ввод.\n";
-        return 1;
+        return 0;
     }
 
     try {
         Car car(max_forward, max_back);
 
-        std::string line;
-        std::getline(std::cin, line);
-
         std::cout
-            << "Команды: on, off, speed <км/ч>, status, exit\n";
+            << "\nАвтомобиль создан.\n"
+            << "Команды: on_eng, off_eng, "
+            << "speed <км/ч>, status, exit\n";
 
-        while (std::cout << "> " &&
+        std::string line;
+
+        while (std::cout << "\n> " << std::flush &&
                std::getline(std::cin, line)) {
 
             std::istringstream input(line);
             std::string command;
+            std::string extra;
 
-            if (!(input >> command))
+            if (!(input >> command)) {
                 continue;
+            }
 
             try {
                 if (command == "speed") {
                     int target;
-                    std::string extra;
 
-                    if (!(input >> target) || (input >> extra)) {
+                    if (!(input >> target) ||
+                        (input >> extra)) {
+
                         throw std::invalid_argument(
                             "Укажите одну целую скорость."
                         );
                     }
 
                     move_car(car, target);
-                } else {
-                    std::string extra;
-
-                    if (input >> extra) {
-                        throw std::invalid_argument(
-                            "Лишние аргументы команды."
-                        );
-                    }
-
-                    if (command == "on") {
-                        car.set_engine_work(true);
-                    } else if (command == "off") {
-                        car.set_engine_work(false);
-                    } else if (command == "status") {
-                        std::cout
-                            << "Двигатель: "
-                            << (car.is_engine_working()
-                                ? "включён"
-                                : "выключен")
-                            << ", скорость: "
-                            << car.get_speed()
-                            << ", цель: "
-                            << car.get_target_speed()
-                            << ", передача: "
-                            << car.get_gear()
-                            << '\n';
-                    } else if (command == "exit") {
-                        break;
-                    } else {
-                        throw std::invalid_argument(
-                            "Неизвестная команда."
-                        );
-                    }
+                    continue;
                 }
+
+                if (input >> extra) {
+                    throw std::invalid_argument(
+                        "Лишние аргументы команды."
+                    );
+                }
+
+                if (command == "on_eng") {
+                    car.set_engine_work(true);
+
+                    std::cout
+                        << "Двигатель включён."
+                        << std::endl;
+
+                } else if (command == "off_eng") {
+                    car.set_engine_work(false);
+
+                    std::cout
+                        << "Двигатель выключен."
+                        << std::endl;
+
+                } else if (command == "status") {
+                    show_status(car);
+
+                } else if (command == "exit") {
+                    std::cout
+                        << "Программа завершена.\n";
+
+                    break;
+
+                } else {
+                    throw std::invalid_argument(
+                        "Неизвестная команда."
+                    );
+                }
+
             } catch (const std::exception& error) {
-                std::cerr << error.what() << '\n';
+                std::cout << "Ошибка: "
+                          << error.what()
+                          << '\n';
             }
         }
+
     } catch (const std::exception& error) {
-        std::cerr << error.what() << '\n';
+        std::cerr << "Ошибка: "
+                  << error.what()
+                  << '\n';
+
         return 1;
     }
+
+    return 0;
 }
